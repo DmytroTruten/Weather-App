@@ -7,28 +7,35 @@ export default function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
-      });
-
-      await fetch(
-        `${
-          import.meta.env.API_URL
-        }/weather?lat=${latitude}&lon=${longitude}&appid=${
-          import.meta.env.API_KEY
-        }`
-      )
-        .then((resolve) => resolve.json())
-        .then((result) => {
-          setData(result);
-          console.log(result);
-        });
+      const response = await fetchWeatherData(latitude, longitude);
+      setData(response);
+      console.log(response);
     };
     fetchData();
   }, [latitude, longitude]);
 
-  return <div className="App">
-    
-  </div>;
+  const fetchWeatherData = async (lat, lon) => {
+    const response = await fetch(
+      `${import.meta.env.API_URL}/weather?lat=${lat}&lon=${lon}&appid=${
+        import.meta.env.API_KEY
+      }&units=metric`
+    );
+    const result = await response.json();
+    return result;
+  };
+
+  const handleLocationUpdate = (position) => {
+    setLatitude(position.coords.latitude);
+    setLongitude(position.coords.longitude);
+  };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(handleLocationUpdate);
+  }, []);
+
+  return (
+    <div className="App">
+      <p>{data.name}</p>
+    </div>
+  );
 }
