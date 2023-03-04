@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import "./App.css";
 export default function App() {
   const [data, setData] = useState([]);
@@ -39,7 +39,16 @@ export default function App() {
   return (
     <div className="app">
       <input type="text" onKeyDown={handleKeyDown} />
-      <p>{city}</p>
+      {data.main ? (
+        <React.Fragment>
+          <p>City: {city}</p>
+          <p>Current temperature: {data.main.temp} </p>
+          <p>Minimum: {data.main.temp_min}</p>
+          <p>Maximum: {data.main.temp_max}</p>
+          <p>Feels like: {data.main.feels_like}</p>
+          <p>Humidity: {data.main.humidity}</p>
+        </React.Fragment>
+      ) : null}
     </div>
   );
 }
