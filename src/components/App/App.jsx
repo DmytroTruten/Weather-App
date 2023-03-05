@@ -3,18 +3,21 @@ import Button from "react-bootstrap/Button";
 import "./App.css";
 import searchIcon from "../../assets/search-icon.svg";
 import moment from "moment";
-import momentTz from "moment-timezone";
 
 export default function App() {
-  const [data, setData] = useState([]);
+  const [weatherData, setWeatherData] = useState([]);
+  const [forecastData, setForecastData] = useState([]);
   const [city, setCity] = useState("");
   const didMount = useRef(true);
   const inputCityRef = useRef(null);
 
   const fetchData = async () => {
-    const response = await fetchWeatherData();
-    setData(response);
-    console.log(response);
+    const weatherResponse = await fetchWeatherData();
+    const forecastResponse = await fetchForecastData();
+    setWeatherData(weatherResponse);
+    setForecastData(forecastResponse);
+    console.log(weatherResponse);
+    console.log(forecastResponse);
   };
 
   useEffect(() => {
@@ -24,22 +27,35 @@ export default function App() {
       try {
         fetchData();
       } catch {
-        setData([]);
+        setWeatherData([]);
       }
     }
   }, [city]);
 
   const fetchWeatherData = async () => {
-    const response = await fetch(
+    const weatherResponse = await fetch(
       `${import.meta.env.VITE_API_URL}/weather?q=${city}&appid=${
         import.meta.env.VITE_API_KEY
       }&units=metric`
     );
-    if (!response.ok) {
+    if (!weatherResponse.ok) {
       throw new Error("There is no such city...");
     }
-    const result = await response.json();
-    return result;
+    const weatherResult = await weatherResponse.json();
+    return weatherResult;
+  };
+
+  const fetchForecastData = async () => {
+    const forecastResponse = await fetch(
+      `${import.meta.env.VITE_API_URL}/forecast?q=${city}&appid=${
+        import.meta.env.VITE_API_KEY
+      }&units=metric`
+    );
+    if (!forecastResponse.ok) {
+      throw new Error("wtf");
+    }
+    const forecastResult = await forecastResponse.json();
+    return forecastResult;
   };
 
   const handleKeyDown = (event) => {
@@ -53,8 +69,10 @@ export default function App() {
   };
 
   const getCurrentCityTime = () => {
-    const currentDate = `${moment().format("dddd, D MMMM YYYY")} | Local Time: `;
-    const timezoneInMinutes = data.timezone / 60;
+    const currentDate = `${moment().format(
+      "dddd, D MMMM YYYY"
+    )} | Local Time: `;
+    const timezoneInMinutes = weatherData.timezone / 60;
     const currentTime = moment().utcOffset(timezoneInMinutes).format("h:mm A");
     return currentDate + currentTime;
   };
@@ -76,15 +94,33 @@ export default function App() {
           <img className="search-city-icon" src={searchIcon} alt="" />
         </Button>
       </div>
-      {data.main ? (
+      {weatherData.main ? (
         <Fragment>
           <p>{getCurrentCityTime()}</p>
-          <p>{city}</p>
-          <p>Current temperature: {data.main.temp} </p>
-          <p>Minimum: {data.main.temp_min}</p>
-          <p>Maximum: {data.main.temp_max}</p>
-          <p>Feels like: {data.main.feels_like}</p>
-          <p>Humidity: {data.main.humidity}</p>
+          <p>{`${city}, ${weatherData.sys.country}`}</p>
+          <p>{weatherData.weather[0].main}</p>
+          <p>Current temperature: {weatherData.main.temp}&#176; </p>
+          <p>Minimum: {weatherData.main.temp_min}&#176;</p>
+          <p>Maximum: {weatherData.main.temp_max}&#176;</p>
+          <p>Feels like: {weatherData.main.feels_like}&#176;</p>
+          <p>Humidity: {weatherData.main.humidity}</p>
+          <div className="forecast-container d-flex">
+            <div>
+              <p>{forecastData.list[0].main.temp}&#176;</p>
+            </div>
+            <div>
+              <p>{forecastData.list[1].main.temp}&#176;</p>
+            </div>
+            <div>
+              <p>{forecastData.list[2].main.temp}&#176;</p>
+            </div>
+            <div>
+              <p>{forecastData.list[3].main.temp}&#176;</p>
+            </div>
+            <div>
+              <p>{forecastData.list[4].main.temp}&#176;</p>
+            </div>
+          </div>
         </Fragment>
       ) : null}
     </div>
