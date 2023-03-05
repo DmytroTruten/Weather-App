@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef, Fragment } from "react";
 import Button from "react-bootstrap/Button";
 import "./App.css";
 import searchIcon from "../../assets/search-icon.svg";
+import moment from "moment";
+import momentTz from "moment-timezone";
+
 export default function App() {
   const [data, setData] = useState([]);
   const [city, setCity] = useState("");
@@ -40,17 +43,27 @@ export default function App() {
   };
 
   const handleKeyDown = (event) => {
-    const inputValue = inputCityRef.current.value;
+    let inputValue = inputCityRef.current.value;
     if (event.key === "Enter" || event.button === 0) {
-      setCity(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
+      const selectedCity =
+        inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+      setCity(selectedCity);
+      inputCityRef.current.value = "";
     }
+  };
+
+  const getCurrentCityTime = () => {
+    const currentDate = `${moment().format("dddd, D MMMM YYYY")} | Local Time: `;
+    const timezoneInMinutes = data.timezone / 60;
+    const currentTime = moment().utcOffset(timezoneInMinutes).format("h:mm A");
+    return currentDate + currentTime;
   };
 
   return (
     <div className="app">
       <div className="input-container d-flex align-items-center">
         <input
-          className="input-city border-light"
+          className="input-city border-0"
           type="text"
           onKeyDown={handleKeyDown}
           placeholder="Search for a city..."
@@ -65,6 +78,7 @@ export default function App() {
       </div>
       {data.main ? (
         <Fragment>
+          <p>{getCurrentCityTime()}</p>
           <p>{city}</p>
           <p>Current temperature: {data.main.temp} </p>
           <p>Minimum: {data.main.temp_min}</p>
