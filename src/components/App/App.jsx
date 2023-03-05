@@ -15,7 +15,11 @@ export default function App() {
     if (didMount.current) {
       didMount.current = false;
     } else {
-      fetchData();
+      try {
+        fetchData();
+      } catch {
+        setData([]);
+      }
     }
   }, [city]);
 
@@ -25,6 +29,9 @@ export default function App() {
         import.meta.env.VITE_API_KEY
       }&units=metric`
     );
+    if (!response.ok) {
+      throw new Error("There is no such city...");
+    }
     const result = await response.json();
     return result;
   };
@@ -38,7 +45,11 @@ export default function App() {
 
   return (
     <div className="app">
-      <input type="text" onKeyDown={handleKeyDown} />
+      <input
+        type="text"
+        onKeyDown={handleKeyDown}
+        placeholder="Search for a city..."
+      />
       {data.main ? (
         <React.Fragment>
           <p>City: {city}</p>
