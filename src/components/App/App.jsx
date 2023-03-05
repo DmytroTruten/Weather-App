@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef, Fragment } from "react";
+import Button from "react-bootstrap/Button";
 import "./App.css";
+import searchIcon from "../../assets/search-icon.svg";
 export default function App() {
   const [data, setData] = useState([]);
   const [city, setCity] = useState("");
   const didMount = useRef(true);
+  const inputCityRef = useRef(null);
 
   const fetchData = async () => {
     const response = await fetchWeatherData();
@@ -37,28 +40,38 @@ export default function App() {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      const inputValue = event.target.value;
+    const inputValue = inputCityRef.current.value;
+    if (event.key === "Enter" || event.button === 0) {
       setCity(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
     }
   };
 
   return (
     <div className="app">
-      <input
-        type="text"
-        onKeyDown={handleKeyDown}
-        placeholder="Search for a city..."
-      />
+      <div className="input-container d-flex align-items-center">
+        <input
+          className="input-city border-light"
+          type="text"
+          onKeyDown={handleKeyDown}
+          placeholder="Search for a city..."
+          ref={inputCityRef}
+        />
+        <Button
+          className="search-city-button btn bg-transparent border-0 py-0"
+          onClick={handleKeyDown}
+        >
+          <img className="search-city-icon" src={searchIcon} alt="" />
+        </Button>
+      </div>
       {data.main ? (
-        <React.Fragment>
-          <p>City: {city}</p>
+        <Fragment>
+          <p>{city}</p>
           <p>Current temperature: {data.main.temp} </p>
           <p>Minimum: {data.main.temp_min}</p>
           <p>Maximum: {data.main.temp_max}</p>
           <p>Feels like: {data.main.feels_like}</p>
           <p>Humidity: {data.main.humidity}</p>
-        </React.Fragment>
+        </Fragment>
       ) : null}
     </div>
   );

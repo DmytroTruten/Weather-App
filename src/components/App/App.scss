@@ -5,8 +5,31 @@
   font-size: 20px;
 }
 
+p {
+  color: #fff;
+  font-weight: 500;
+}
+
 .app {
   display: flex;
   align-items: center;
   flex-direction: column;
+  padding: 50px 0px 0px;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to right, #09c6f9, #045de9);
+}
+
+.search-city-button {
+  height: 36px;
+}
+
+.search-city-icon {
+  width: 25px;
+}
+
+.input-city {
+  &:focus {
+    outline: none;
+  }
 }
