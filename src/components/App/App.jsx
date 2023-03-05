@@ -1,23 +1,20 @@
 import React, { useState, useEffect, useRef, Fragment } from "react";
 import Button from "react-bootstrap/Button";
+import ForecastSection from "../Forecast/Forecast";
 import "./App.css";
 import searchIcon from "../../assets/search-icon.svg";
 import moment from "moment";
 
 export default function App() {
   const [weatherData, setWeatherData] = useState([]);
-  const [forecastData, setForecastData] = useState([]);
   const [city, setCity] = useState("");
   const didMount = useRef(true);
   const inputCityRef = useRef(null);
 
   const fetchData = async () => {
     const weatherResponse = await fetchWeatherData();
-    const forecastResponse = await fetchForecastData();
     setWeatherData(weatherResponse);
-    setForecastData(forecastResponse);
     console.log(weatherResponse);
-    console.log(forecastResponse);
   };
 
   useEffect(() => {
@@ -45,18 +42,6 @@ export default function App() {
     return weatherResult;
   };
 
-  const fetchForecastData = async () => {
-    const forecastResponse = await fetch(
-      `${import.meta.env.VITE_API_URL}/forecast?q=${city}&appid=${
-        import.meta.env.VITE_API_KEY
-      }&units=metric`
-    );
-    if (!forecastResponse.ok) {
-      throw new Error("wtf");
-    }
-    const forecastResult = await forecastResponse.json();
-    return forecastResult;
-  };
 
   const handleKeyDown = (event) => {
     let inputValue = inputCityRef.current.value;
@@ -104,23 +89,7 @@ export default function App() {
           <p>Maximum: {weatherData.main.temp_max}&#176;</p>
           <p>Feels like: {weatherData.main.feels_like}&#176;</p>
           <p>Humidity: {weatherData.main.humidity}</p>
-          <div className="forecast-container d-flex">
-            <div>
-              <p>{forecastData.list[0].main.temp}&#176;</p>
-            </div>
-            <div>
-              <p>{forecastData.list[1].main.temp}&#176;</p>
-            </div>
-            <div>
-              <p>{forecastData.list[2].main.temp}&#176;</p>
-            </div>
-            <div>
-              <p>{forecastData.list[3].main.temp}&#176;</p>
-            </div>
-            <div>
-              <p>{forecastData.list[4].main.temp}&#176;</p>
-            </div>
-          </div>
+          <ForecastSection city={city}/>
         </Fragment>
       ) : null}
     </div>
