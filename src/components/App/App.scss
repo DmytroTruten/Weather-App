@@ -1,13 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 
 * {
-  font-family: "Quicksand";
+  font-family: "Quicksand", "Arial";
 }
 
 p {
   color: #fff;
   font-weight: 500;
   margin: 0 !important;
+}
+
+span {
+  color: #fff;
+}
+
+img {
+  width: 25px;
 }
 
 .app {
@@ -18,10 +26,6 @@ p {
 
 .search-city-button {
   height: 36px;
-}
-
-.search-city-icon {
-  width: 25px;
 }
 
 .input-city {
@@ -37,4 +41,12 @@ p {
 .weather-temp {
   font-size: 60px;
   margin: 0;
+}
+
+.current-datetime {
+  font-size: 20px;
+}
+
+.current-city {
+  font-size: 30px;
 }

@@ -3,6 +3,13 @@ import Button from "react-bootstrap/Button";
 import ForecastSection from "../Forecast/Forecast";
 import "./App.css";
 import searchIcon from "../../assets/search-icon.svg";
+import thermometerIcon from "../../assets/thermometer-icon.svg";
+import waterdropIcon from "../../assets/waterdrop-icon.svg";
+import windIcon from "../../assets/wind-icon.svg";
+import sunriseIcon from "../../assets/sunrise-icon.svg";
+import sunsetIcon from "../../assets/sunset-icon.svg";
+import arrowUpIcon from "../../assets/arrow-up-icon.svg";
+import arrowDownIcon from "../../assets/arrow-down-icon.svg";
 import moment from "moment";
 
 export default function App() {
@@ -98,33 +105,54 @@ export default function App() {
       <div className="weather-info col-10 d-flex flex-column align-items-center px-0">
         {weatherData.main ? (
           <Fragment>
-            <p className="fw-light">{getCurrentCityTime()}</p>
-            <p className="fw-bold">{`${city}, ${weatherData.sys.country}`}</p>
-            <p className="weather-main">{weatherData.weather[0].main}</p>
+            <p className="current-datetime fw-normal my-2">{getCurrentCityTime()}</p>
+            <p className="current-city fw-bold">{`${city}, ${weatherData.sys.country}`}</p>
+            <p className="weather-main my-4">{weatherData.weather[0].main}</p>
             <div className="w-100 row justify-content-between align-items-center">
               <p className="weather-temp col text-center">
                 {weatherData.main.temp}&#176;
               </p>
               <div className="col">
-                <p className="text-center">
-                  Feels like: {weatherData.main.feels_like}&#176;
-                </p>
-                <p className="text-center">
-                  Humidity: {weatherData.main.humidity}
-                </p>
-                <p className="text-center">
-                  Wind: {weatherData.wind.speed} meter/sec
-                </p>
+                <div className="d-flex justify-content-center my-2">
+                  <img className="me-2" src={thermometerIcon} alt="" />
+                  <p>
+                    Feels like: {weatherData.main.feels_like}&#176;
+                  </p>
+                </div>
+                <div className="d-flex justify-content-center my-2">
+                  <img className="me-2" src={waterdropIcon} alt="" />
+                  <p>
+                    Humidity: {weatherData.main.humidity}%
+                  </p>
+                </div>
+                <div className="d-flex justify-content-center my-2">
+                  <img className="me-2" src={windIcon} alt="" />
+                  <p>
+                    Wind: {weatherData.wind.speed} m/s
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="w-100 d-flex justify-content-between">
-              <p>Rise: {getCurrentCitySunriseSunset("sunrise")}</p>
-              <span>&nbsp;|&nbsp;</span>
-              <p>Set: {getCurrentCitySunriseSunset("sunset")}</p>
-              <span>&nbsp;|&nbsp;</span>
-              <p>Low: {weatherData.main.temp_min}&#176;</p>
-              <span>&nbsp;|&nbsp;</span>
-              <p>High: {weatherData.main.temp_max}&#176;</p>
+            <div className="w-100 d-flex justify-content-between my-5">
+              <div className="d-flex"> 
+                <img className="me-2" src={sunriseIcon} alt="" />
+                <p>Rise: {getCurrentCitySunriseSunset("sunrise")}</p>
+              </div>
+              <span className="align-middle">&nbsp;|&nbsp;</span>
+              <div className="d-flex">
+                <img className="me-2" src={sunsetIcon} alt="" />
+                <p>Set: {getCurrentCitySunriseSunset("sunset")}</p>
+              </div>
+              <span className="align-middle">&nbsp;|&nbsp;</span>
+              <div className="d-flex">
+                <img className="me-2" src={arrowUpIcon} alt="" />
+                <p>Low: {weatherData.main.temp_min}&#176;</p>
+              </div>
+              <span className="align-middle">&nbsp;|&nbsp;</span>
+              <div className="d-flex">
+                <img className="me-2" src={arrowDownIcon} alt="" />
+                <p>High: {weatherData.main.temp_max}&#176;</p>
+              </div>
             </div>
             <ForecastSection city={city} />
           </Fragment>
