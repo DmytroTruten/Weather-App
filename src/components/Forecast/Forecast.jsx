@@ -15,7 +15,7 @@ export default function ForecastSection(props) {
     } catch {
       setForecastData([]);
     }
-  }, []);
+  }, [props.city]);
 
   const fetchForecastData = async () => {
     const forecastResponse = await fetch(

@@ -42,7 +42,6 @@ export default function App() {
     return weatherResult;
   };
 
-
   const handleKeyDown = (event) => {
     let inputValue = inputCityRef.current.value;
     if (event.key === "Enter" || event.button === 0) {
@@ -60,6 +59,23 @@ export default function App() {
     const timezoneInMinutes = weatherData.timezone / 60;
     const currentTime = moment().utcOffset(timezoneInMinutes).format("h:mm A");
     return currentDate + currentTime;
+  };
+
+  const getCurrentCitySunriseSunset = (request) => {
+    const timezone = weatherData.timezone;
+    const dataSunrise = weatherData.sys.sunrise;
+    const dataSunset = weatherData.sys.sunset;
+
+    let currentSunrise = moment
+      .utc(dataSunrise, "X")
+      .add(timezone, "seconds")
+      .format("HH:mm A");
+    let currentSunset = moment
+      .utc(dataSunset, "X")
+      .add(timezone, "seconds")
+      .format("HH:mm A");
+
+    return request === "sunrise" ? currentSunrise : currentSunset;
   };
 
   return (
@@ -84,12 +100,14 @@ export default function App() {
           <p>{getCurrentCityTime()}</p>
           <p>{`${city}, ${weatherData.sys.country}`}</p>
           <p>{weatherData.weather[0].main}</p>
-          <p>Current temperature: {weatherData.main.temp}&#176; </p>
-          <p>Minimum: {weatherData.main.temp_min}&#176;</p>
-          <p>Maximum: {weatherData.main.temp_max}&#176;</p>
+          <p>{weatherData.main.temp}&#176; </p>
+          <p>Low: {weatherData.main.temp_min}&#176;</p>
+          <p>High: {weatherData.main.temp_max}&#176;</p>
           <p>Feels like: {weatherData.main.feels_like}&#176;</p>
           <p>Humidity: {weatherData.main.humidity}</p>
-          <ForecastSection city={city}/>
+          <p>{getCurrentCitySunriseSunset("sunrise")}</p>
+          <p>{getCurrentCitySunriseSunset("sunset")}</p>
+          <ForecastSection city={city} />
         </Fragment>
       ) : null}
     </div>
