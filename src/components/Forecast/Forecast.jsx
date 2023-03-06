@@ -35,7 +35,7 @@ export default function ForecastSection(props) {
     for (let i = 0; i < 5; i++) {
       forecastArray.push(
         <div key={i}>
-          <p>{forecastData.list[i].main.temp}&#176;</p>
+          <p>{Math.round(forecastData.list[i].main.temp)}&#176;</p>
         </div>
       );
     }
@@ -48,5 +48,3 @@ export default function ForecastSection(props) {
     </div>
   );
 }
-
-
