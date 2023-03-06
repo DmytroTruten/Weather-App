@@ -79,8 +79,8 @@ export default function App() {
   };
 
   return (
-    <div className="app d-flex flex-column align-items-center">
-      <div className="input-container d-flex align-items-center">
+    <div className="app row flex-column align-items-center mx-0">
+      <div className="input-container col-12 d-flex justify-content-center align-items-center px-0">
         <input
           className="input-city border-0"
           type="text"
@@ -95,24 +95,35 @@ export default function App() {
           <img className="search-city-icon" src={searchIcon} alt="" />
         </Button>
       </div>
-      <div className="weather-info d-flex flex-column align-items-center">
+      <div className="weather-info col-10 d-flex flex-column align-items-center px-0">
         {weatherData.main ? (
           <Fragment>
             <p className="fw-light">{getCurrentCityTime()}</p>
             <p className="fw-bold">{`${city}, ${weatherData.sys.country}`}</p>
             <p className="weather-main">{weatherData.weather[0].main}</p>
-            <div className="w-50% d-flex justify-content-between align-items-center">
-              <p className="weather-temp">{weatherData.main.temp}&#176;</p>
-              <div>
-                <p>Feels like: {weatherData.main.feels_like}&#176;</p>
-                <p>Humidity: {weatherData.main.humidity}</p>
-                <p>Wind: {weatherData.wind.speed} meter/sec</p>
+            <div className="w-100 row justify-content-between align-items-center">
+              <p className="weather-temp col text-center">
+                {weatherData.main.temp}&#176;
+              </p>
+              <div className="col">
+                <p className="text-center">
+                  Feels like: {weatherData.main.feels_like}&#176;
+                </p>
+                <p className="text-center">
+                  Humidity: {weatherData.main.humidity}
+                </p>
+                <p className="text-center">
+                  Wind: {weatherData.wind.speed} meter/sec
+                </p>
               </div>
             </div>
-            <div className="d-flex justify-content-between">
+            <div className="w-100 d-flex justify-content-between">
               <p>Rise: {getCurrentCitySunriseSunset("sunrise")}</p>
+              <span>&nbsp;|&nbsp;</span>
               <p>Set: {getCurrentCitySunriseSunset("sunset")}</p>
+              <span>&nbsp;|&nbsp;</span>
               <p>Low: {weatherData.main.temp_min}&#176;</p>
+              <span>&nbsp;|&nbsp;</span>
               <p>High: {weatherData.main.temp_max}&#176;</p>
             </div>
             <ForecastSection city={city} />
