@@ -79,7 +79,7 @@ export default function App() {
   };
 
   return (
-    <div className="app">
+    <div className="app d-flex flex-column align-items-center">
       <div className="input-container d-flex align-items-center">
         <input
           className="input-city border-0"
@@ -89,27 +89,36 @@ export default function App() {
           ref={inputCityRef}
         />
         <Button
-          className="search-city-button btn bg-transparent border-0 py-0"
+          className="search-city-button btn bg-transparent d-flex align-items-center border-0 py-0"
           onClick={handleKeyDown}
         >
           <img className="search-city-icon" src={searchIcon} alt="" />
         </Button>
       </div>
-      {weatherData.main ? (
-        <Fragment>
-          <p>{getCurrentCityTime()}</p>
-          <p>{`${city}, ${weatherData.sys.country}`}</p>
-          <p>{weatherData.weather[0].main}</p>
-          <p>{weatherData.main.temp}&#176; </p>
-          <p>Low: {weatherData.main.temp_min}&#176;</p>
-          <p>High: {weatherData.main.temp_max}&#176;</p>
-          <p>Feels like: {weatherData.main.feels_like}&#176;</p>
-          <p>Humidity: {weatherData.main.humidity}</p>
-          <p>{getCurrentCitySunriseSunset("sunrise")}</p>
-          <p>{getCurrentCitySunriseSunset("sunset")}</p>
-          <ForecastSection city={city} />
-        </Fragment>
-      ) : null}
+      <div className="weather-info d-flex flex-column align-items-center">
+        {weatherData.main ? (
+          <Fragment>
+            <p className="fw-light">{getCurrentCityTime()}</p>
+            <p className="fw-bold">{`${city}, ${weatherData.sys.country}`}</p>
+            <p className="weather-main">{weatherData.weather[0].main}</p>
+            <div className="w-50% d-flex justify-content-between align-items-center">
+              <p className="weather-temp">{weatherData.main.temp}&#176;</p>
+              <div>
+                <p>Feels like: {weatherData.main.feels_like}&#176;</p>
+                <p>Humidity: {weatherData.main.humidity}</p>
+                <p>Wind: {weatherData.wind.speed} meter/sec</p>
+              </div>
+            </div>
+            <div className="d-flex justify-content-between">
+              <p>Rise: {getCurrentCitySunriseSunset("sunrise")}</p>
+              <p>Set: {getCurrentCitySunriseSunset("sunset")}</p>
+              <p>Low: {weatherData.main.temp_min}&#176;</p>
+              <p>High: {weatherData.main.temp_max}&#176;</p>
+            </div>
+            <ForecastSection city={city} />
+          </Fragment>
+        ) : null}
+      </div>
     </div>
   );
 }

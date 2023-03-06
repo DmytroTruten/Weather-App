@@ -1,18 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 * {
   font-family: "Quicksand";
-  font-size: 20px;
 }
 
 p {
   color: #fff;
   font-weight: 500;
+  margin: 0;
 }
 
 .app {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
   padding: 50px 0px 0px;
   width: 100%;
   height: 100%;
@@ -29,4 +26,13 @@ p {
 
 .input-city:focus {
   outline: none;
+}
+
+.weather-main {
+  color: cyan;
+}
+
+.weather-temp {
+  font-size: 60px;
+  margin: 0;
 }/*# sourceMappingURL=App.css.map */
