@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 
 export default function ForecastSection(props) {
@@ -35,7 +36,7 @@ export default function ForecastSection(props) {
     for (let i = 0; i < 5; i++) {
       forecastArray.push(
         <div className="forecast-3-hour d-flex flex-column align-items-center" key={i}>
-          <p>{`${forecastData.list[i].dt_txt.slice(-8, -3)}`}</p>
+          <p>{`${moment(forecastData.list[i].dt_txt).format("hh:mm A")}`}</p>
           <img className="forecast-icon"
             src={`https://openweathermap.org/img/wn/${forecastData.list[i].weather[0].icon}@2x.png`}
             alt=""
