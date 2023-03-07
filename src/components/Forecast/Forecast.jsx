@@ -34,7 +34,12 @@ export default function ForecastSection(props) {
     const forecastArray = [];
     for (let i = 0; i < 5; i++) {
       forecastArray.push(
-        <div key={i}>
+        <div className="forecast-3-hour d-flex flex-column align-items-center" key={i}>
+          <p>{`${forecastData.list[i].dt_txt.slice(-8, -3)}`}</p>
+          <img className="forecast-icon"
+            src={`https://openweathermap.org/img/wn/${forecastData.list[i].weather[0].icon}@2x.png`}
+            alt=""
+          />
           <p>{Math.round(forecastData.list[i].main.temp)}&#176;</p>
         </div>
       );
@@ -43,7 +48,7 @@ export default function ForecastSection(props) {
   };
 
   return (
-    <div className="forecast-container d-flex">
+    <div className="forecast-container w-100 d-flex justify-content-between">
       {forecastData.list && forecastData.list.length ? appendForecast() : null}
     </div>
   );
