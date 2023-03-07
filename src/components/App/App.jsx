@@ -10,6 +10,11 @@ import sunriseIcon from "../../assets/sunrise-icon.svg";
 import sunsetIcon from "../../assets/sunset-icon.svg";
 import arrowUpIcon from "../../assets/arrow-up-icon.svg";
 import arrowDownIcon from "../../assets/arrow-down-icon.svg";
+
+import clearIcon from "../../assets/clear-icon.svg";
+import cloudsIcon from "../../assets/clouds-icon.svg";
+import heavyRainIcon from "../../assets/heavy-rain-icon.svg";
+import lightSnowIcon from "../../assets/light-snow-icon.svg";
 import moment from "moment";
 
 export default function App() {
@@ -89,6 +94,25 @@ export default function App() {
     return Math.round(data);
   };
 
+  const selectWeatherMainIcon = (weatherMain) => {
+    let weatherMainIcon;
+    switch (weatherMain) {
+      case "Clear":
+        weatherMainIcon = clearIcon;
+        break;
+      case "Clouds":
+        weatherMainIcon = cloudsIcon;
+        break;
+      case "Snow":
+        weatherMainIcon = lightSnowIcon;
+        break;
+      case "Rain":
+        weatherMainIcon = heavyRainIcon;
+        break;
+    }
+    return weatherMainIcon;
+  };
+
   return (
     <div className="app row flex-column align-items-center mx-0">
       <div className="input-container col-12 d-flex justify-content-center align-items-center px-0">
@@ -115,6 +139,13 @@ export default function App() {
             <p className="current-city fw-bold">{`${city}, ${weatherData.sys.country}`}</p>
             <p className="weather-main my-4">{weatherData.weather[0].main}</p>
             <div className="w-100 row justify-content-between align-items-center">
+              <div className="col d-flex justify-content-center">
+                <img
+                  className="weather-main-icon"
+                  src={selectWeatherMainIcon(weatherData.weather[0].main)}
+                  alt=""
+                />
+              </div>
               <p className="weather-temp col text-center">
                 {formatData(weatherData.main.temp)}&#176;
               </p>
