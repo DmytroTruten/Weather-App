@@ -106,7 +106,7 @@ export default function App() {
           <img className="search-city-icon" src={searchIcon} alt="" />
         </Button>
       </div>
-      <div className="weather-info col-10 d-flex flex-column align-items-center px-0">
+      <div className="weather-info col-xs-12 col-sm-10 col-md-8 col-lg-6 d-flex flex-column align-items-center px-0">
         {weatherData.main ? (
           <Fragment>
             <p className="current-datetime fw-normal my-2">
@@ -164,6 +164,8 @@ export default function App() {
                 <p>Low: {formatData(weatherData.main.temp_min)}&#176;</p>
               </div>
             </div>
+            <p className="w-100 h-1 fw-bold text-left">3-HOUR FORECAST</p>
+            <span className="forecast-splitting-line w-100 my-3"></span>
             <ForecastSection city={city} />
           </Fragment>
         ) : null}

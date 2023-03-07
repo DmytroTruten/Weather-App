@@ -54,4 +54,9 @@ img {
 
 .forecast-icon {
   width: 60px;
+}
+
+.forecast-splitting-line {
+  height: 1px;
+  background-color: #fff;
 }/*# sourceMappingURL=App.css.map */
