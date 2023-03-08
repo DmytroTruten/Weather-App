@@ -90,7 +90,7 @@ export default function App() {
   };
 
   return (
-    <div className="app row flex-column align-items-center mx-0">
+    <div className="app d-flex flex-column align-items-center mx-0">
       <div className="input-container col-12 d-flex justify-content-center align-items-center px-0">
         <input
           className="input-city border-0"
@@ -164,7 +164,11 @@ export default function App() {
                 <p>Low: {formatData(weatherData.main.temp_min)}&#176;</p>
               </div>
             </div>
-            <p className="w-100 h-1 fw-bold text-left">3-HOUR FORECAST</p>
+            <p className="w-100 fw-bold text-left">3-HOUR FORECAST</p>
+            <span className="forecast-splitting-line w-100 my-3"></span>
+            <ForecastSection city={city} />
+
+            <p className="w-100 fw-bold text-left mt-4">DAILY FORECAST</p>
             <span className="forecast-splitting-line w-100 my-3"></span>
             <ForecastSection city={city} />
           </Fragment>
