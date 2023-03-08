@@ -166,11 +166,11 @@ export default function App() {
             </div>
             <p className="w-100 fw-bold text-left">3-HOUR FORECAST</p>
             <span className="forecast-splitting-line w-100 my-3"></span>
-            <ForecastSection city={city} />
+            <ForecastSection city={city} type={"3-hour"} />
 
             <p className="w-100 fw-bold text-left mt-4">DAILY FORECAST</p>
             <span className="forecast-splitting-line w-100 my-3"></span>
-            <ForecastSection city={city} />
+            <ForecastSection city={city} type={'daily'} />
           </Fragment>
         ) : null}
       </div>
