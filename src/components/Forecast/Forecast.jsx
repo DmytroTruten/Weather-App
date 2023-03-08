@@ -51,8 +51,12 @@ export default function ForecastSection(props) {
         );
       }
     } else {
-      for(let i = 0; i < forecastData.list.length; i++) {
-        console.log(forecastData.list[i]);
+      for (let i = 0; i < forecastData.list.length; i++) {
+        if (
+          moment(forecastData.list[i].dt_txt).format("DD MM yyyy") !==
+          moment().format("DD MM yyyy")
+        )
+          console.log(forecastData.list[i].main.temp_max);
       }
     }
     return forecastArray;
