@@ -51,13 +51,27 @@ export default function ForecastSection(props) {
         );
       }
     } else {
+      let previousDay = moment(forecastData.list[0].dt_txt).format(
+        "DD MM yyyy"
+      );
+      let nextDay;
+      let firstArray = [];
       for (let i = 0; i < forecastData.list.length; i++) {
         if (
           moment(forecastData.list[i].dt_txt).format("DD MM yyyy") !==
           moment().format("DD MM yyyy")
-        )
-          console.log(forecastData.list[i].main.temp_max);
+        ) {
+          nextDay = moment(forecastData.list[i].dt_txt).format("DD MM yyyy");
+          if (nextDay !== previousDay) {
+            previousDay = nextDay;
+            console.log("next");
+          }
+          firstArray.push(forecastData.list[i].main.temp_max);
+          console.log(previousDay);
+          console.log(nextDay);
+        }
       }
+      console.log(firstArray);
     }
     return forecastArray;
   };
