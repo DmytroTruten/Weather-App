@@ -51,27 +51,43 @@ export default function ForecastSection(props) {
         );
       }
     } else {
-      let previousDay = moment(forecastData.list[0].dt_txt).format(
-        "DD MM yyyy"
-      );
-      let nextDay;
-      let firstArray = [];
+      let dailyForecastArray = [];
       for (let i = 0; i < forecastData.list.length; i++) {
         if (
           moment(forecastData.list[i].dt_txt).format("DD MM yyyy") !==
           moment().format("DD MM yyyy")
         ) {
-          nextDay = moment(forecastData.list[i].dt_txt).format("DD MM yyyy");
-          if (nextDay !== previousDay) {
-            previousDay = nextDay;
-            console.log("next");
-          }
-          firstArray.push(forecastData.list[i].main.temp_max);
-          console.log(previousDay);
-          console.log(nextDay);
+          dailyForecastArray.push(forecastData.list[i].main.temp_max);
         }
       }
-      console.log(firstArray);
+      let subarrays = [
+        dailyForecastArray.slice(0, 8),
+        dailyForecastArray.slice(8, 16),
+        dailyForecastArray.slice(16, 24),
+        dailyForecastArray.slice(24, 32),
+        dailyForecastArray.slice(32),
+      ];
+      let maxArray = subarrays.map((subarray) => {
+        return Math.max(...subarray);
+      });
+      console.log(maxArray);
+
+      for (let i = 0; i < 5; i++) {
+        forecastArray.push(
+          <div
+            className="forecast-daily d-flex flex-column align-items-center"
+            key={i}
+          >
+            <p>{`${moment(forecastData.list[i].dt_txt).format("ddd")}`}</p>
+            <img
+              className="forecast-icon"
+              src={`https://openweathermap.org/img/wn/${forecastData.list[i].weather[0].icon}@2x.png`}
+              alt=""
+            />
+            <p>{Math.round(maxArray[i])}&#176;</p>
+          </div>
+        );
+      }
     }
     return forecastArray;
   };
