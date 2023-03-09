@@ -31,6 +31,10 @@ export default function ForecastSection(props) {
     return forecastResult;
   };
 
+  const appendDays = (i) => {
+    return `${moment().add(i, "day").format("ddd")}`;
+  };
+
   const appendForecast = () => {
     const forecastArray = [];
     if (props.type === "3-hour") {
@@ -78,7 +82,7 @@ export default function ForecastSection(props) {
             className="forecast-daily d-flex flex-column align-items-center"
             key={i}
           >
-            <p>{`${moment(forecastData.list[i].dt_txt).format("ddd")}`}</p>
+            <p>{appendDays(i)}</p>
             <img
               className="forecast-icon"
               src={`https://openweathermap.org/img/wn/${forecastData.list[i].weather[0].icon}@2x.png`}
