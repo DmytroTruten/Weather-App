@@ -32,7 +32,7 @@ export default function ForecastSection(props) {
   };
 
   const appendDays = (i) => {
-    return `${moment().add(i, "day").format("ddd")}`;
+    return `${moment().add(i + 1, "day").format("ddd")}`;
   };
 
   const appendForecast = () => {
@@ -64,6 +64,7 @@ export default function ForecastSection(props) {
           dailyForecastArray.push(forecastData.list[i].main.temp_max);
         }
       }
+
       let subarrays = [
         dailyForecastArray.slice(0, 8),
         dailyForecastArray.slice(8, 16),
@@ -74,9 +75,10 @@ export default function ForecastSection(props) {
       let maxArray = subarrays.map((subarray) => {
         return Math.max(...subarray);
       });
-      console.log(maxArray);
 
       for (let i = 0; i < 5; i++) {
+        const maxIndex = subarrays[i].indexOf(maxArray[i]);
+
         forecastArray.push(
           <div
             className="forecast-daily d-flex flex-column align-items-center"
@@ -85,7 +87,9 @@ export default function ForecastSection(props) {
             <p>{appendDays(i)}</p>
             <img
               className="forecast-icon"
-              src={`https://openweathermap.org/img/wn/${forecastData.list[i].weather[0].icon}@2x.png`}
+              src={`https://openweathermap.org/img/wn/${
+                forecastData.list[i * 8 + maxIndex].weather[0].icon
+              }@2x.png`}
               alt=""
             />
             <p>{Math.round(maxArray[i])}&#176;</p>
