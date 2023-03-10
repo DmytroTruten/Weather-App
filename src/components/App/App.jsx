@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import ForecastSection from "../Forecast/Forecast";
 import "./App.css";
 import searchIcon from "../../assets/search-icon.svg";
+import locationIcon from "../../assets/location-icon.svg";
 import thermometerIcon from "../../assets/thermometer-icon.svg";
 import waterdropIcon from "../../assets/waterdrop-icon.svg";
 import windIcon from "../../assets/wind-icon.svg";
@@ -41,6 +42,7 @@ export default function App() {
     try {
       const weatherResponse = await fetchWeatherData(request);
       setWeatherData(weatherResponse);
+      setCity(weatherResponse.name)
       console.log(weatherResponse);
     } catch (error) {
       console.error(error);
@@ -72,7 +74,7 @@ export default function App() {
 
   const fetchWeatherData = async (request) => {
     const endpoint =
-      request === 'initial'
+      request === "initial"
         ? `weather?lat=${location.lat}&lon=${location.lon}`
         : `weather?q=${city}`;
     const weatherResponse = await fetch(
@@ -135,10 +137,16 @@ export default function App() {
           ref={inputCityRef}
         />
         <Button
-          className="search-city-button btn bg-transparent d-flex align-items-center border-0 py-0"
+          className="input-container-button btn bg-transparent d-flex align-items-center border-0 py-0"
           onClick={handleKeyDown}
         >
           <img className="search-city-icon" src={searchIcon} alt="" />
+        </Button>
+        <Button
+          className="input-container-button btn bg-transparent d-flex align-items-center border-0 py-0"
+          onClick={() => {fetchData("initial")}}
+        >
+          <img src={locationIcon} alt="" />
         </Button>
       </div>
       <div className="weather-info col-xs-12 col-sm-10 col-md-8 col-lg-6 d-flex flex-column align-items-center px-0">
