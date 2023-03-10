@@ -27,7 +27,7 @@ export default function App() {
           navigator.geolocation.getCurrentPosition(resolve, reject);
         });
         setLat(position.coords.latitude);
-        setLon(position.coords.longitude);
+        setLon(position.coords.longitude); 
       } catch (error) {
         console.error(error);
       }
@@ -105,7 +105,7 @@ export default function App() {
     let inputValue = inputCityRef.current.value;
     if (event.key === "Enter" || event.button === 0) {
       const selectedCity =
-        inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+        (inputValue.charAt(0).toUpperCase() + inputValue.slice(1)).trim();
       setCity(selectedCity);
       inputCityRef.current.value = "";
     }
@@ -218,11 +218,11 @@ export default function App() {
             </div>
             <p className="w-100 fw-bold text-left">3-HOUR FORECAST</p>
             <span className="forecast-splitting-line w-100 my-3"></span>
-            <ForecastSection city={city} type={"3-hour"} />
+            <ForecastSection city={weatherData.name} type={"3-hour"} />
 
             <p className="w-100 fw-bold text-left mt-4">DAILY FORECAST</p>
             <span className="forecast-splitting-line w-100 my-3"></span>
-            <ForecastSection city={city} type={"daily"} />
+            <ForecastSection city={weatherData.name} type={"daily"} />
           </Fragment>
         ) : null}
       </div>
