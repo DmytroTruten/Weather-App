@@ -13,13 +13,42 @@ import arrowDownIcon from "../../assets/arrow-down-icon.svg";
 import moment from "moment";
 
 export default function App() {
+  const [lat, setLat] = useState(null);
+  const [lon, setLon] = useState(null);
   const [weatherData, setWeatherData] = useState([]);
   const [city, setCity] = useState("");
   const didMount = useRef(true);
   const inputCityRef = useRef(null);
 
+  const getCurrentLocation = async () => {
+    if (navigator.geolocation) {
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+        setLat(position.coords.latitude);
+        setLon(position.coords.longitude);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
   const fetchData = async () => {
-    const weatherResponse = await fetchWeatherData();
+    try {
+      const weatherResponse = await fetchWeatherData();
+      setWeatherData(weatherResponse);
+      console.log(weatherResponse);
+    } catch (error) {
+      console.error(error);
+      setWeatherData([]);
+    }
+  };
+
+  const initialFetchData = async () => {
+    const weatherResponse = await initialFetch();
     setWeatherData(weatherResponse);
     console.log(weatherResponse);
   };
@@ -35,6 +64,29 @@ export default function App() {
       }
     }
   }, [city]);
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
+  useEffect(() => {
+    if (lat && lon) {
+      initialFetchData();
+    }
+  }, [lat, lon]);
+
+  const initialFetch = async () => {
+    const weatherResponse = await fetch(
+      `${import.meta.env.VITE_API_URL}/weather?lat=${lat}&lon=${lon}&appid=${
+        import.meta.env.VITE_API_KEY
+      }&units=metric`
+    );
+    if (!weatherResponse.ok) {
+      throw new Error("There is no such city...");
+    }
+    const weatherResult = await weatherResponse.json();
+    return weatherResult;
+  };
 
   const fetchWeatherData = async () => {
     const weatherResponse = await fetch(
@@ -112,7 +164,7 @@ export default function App() {
             <p className="current-datetime fw-normal my-2">
               {getCurrentCityTime()}
             </p>
-            <p className="current-city fw-bold">{`${city}, ${weatherData.sys.country}`}</p>
+            <p className="current-city fw-bold">{`${weatherData.name}, ${weatherData.sys.country}`}</p>
             <p className="weather-main my-4">{weatherData.weather[0].main}</p>
             <div className="w-100 row justify-content-between align-items-center">
               <div className="col d-flex justify-content-center">
@@ -170,7 +222,7 @@ export default function App() {
 
             <p className="w-100 fw-bold text-left mt-4">DAILY FORECAST</p>
             <span className="forecast-splitting-line w-100 my-3"></span>
-            <ForecastSection city={city} type={'daily'} />
+            <ForecastSection city={city} type={"daily"} />
           </Fragment>
         ) : null}
       </div>
