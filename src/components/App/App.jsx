@@ -13,8 +13,7 @@ import arrowDownIcon from "../../assets/arrow-down-icon.svg";
 import moment from "moment";
 
 export default function App() {
-  const [lat, setLat] = useState(null);
-  const [lon, setLon] = useState(null);
+  const [location, setLocation] = useState({ lat: null, lon: null });
   const [weatherData, setWeatherData] = useState([]);
   const [city, setCity] = useState("");
   const didMount = useRef(true);
@@ -26,8 +25,10 @@ export default function App() {
         const position = await new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject);
         });
-        setLat(position.coords.latitude);
-        setLon(position.coords.longitude); 
+        setLocation({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        });
       } catch (error) {
         console.error(error);
       }
@@ -36,9 +37,9 @@ export default function App() {
     }
   };
 
-  const fetchData = async () => {
+  const fetchData = async (request) => {
     try {
-      const weatherResponse = await fetchWeatherData();
+      const weatherResponse = await fetchWeatherData(request);
       setWeatherData(weatherResponse);
       console.log(weatherResponse);
     } catch (error) {
@@ -47,55 +48,40 @@ export default function App() {
     }
   };
 
-  const initialFetchData = async () => {
-    const weatherResponse = await initialFetch();
-    setWeatherData(weatherResponse);
-    console.log(weatherResponse);
-  };
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
+  useEffect(() => {
+    if (location.lat && location.lon) {
+      fetchData("initial");
+    }
+  }, [location]);
 
   useEffect(() => {
     if (didMount.current) {
       didMount.current = false;
     } else {
       try {
-        fetchData();
+        fetchData("user input");
       } catch {
         setWeatherData([]);
       }
     }
   }, [city]);
 
-  useEffect(() => {
-    getCurrentLocation();
-  }, []);
-
-  useEffect(() => {
-    if (lat && lon) {
-      initialFetchData();
-    }
-  }, [lat, lon]);
-
-  const initialFetch = async () => {
+  const fetchWeatherData = async (request) => {
+    const endpoint =
+      request === 'initial'
+        ? `weather?lat=${location.lat}&lon=${location.lon}`
+        : `weather?q=${city}`;
     const weatherResponse = await fetch(
-      `${import.meta.env.VITE_API_URL}/weather?lat=${lat}&lon=${lon}&appid=${
+      `${import.meta.env.VITE_API_URL}/${endpoint}&appid=${
         import.meta.env.VITE_API_KEY
       }&units=metric`
     );
     if (!weatherResponse.ok) {
-      throw new Error("There is no such city...");
-    }
-    const weatherResult = await weatherResponse.json();
-    return weatherResult;
-  };
-
-  const fetchWeatherData = async () => {
-    const weatherResponse = await fetch(
-      `${import.meta.env.VITE_API_URL}/weather?q=${city}&appid=${
-        import.meta.env.VITE_API_KEY
-      }&units=metric`
-    );
-    if (!weatherResponse.ok) {
-      throw new Error("There is no such city...");
+      throw new Error("Wrong request parameters...");
     }
     const weatherResult = await weatherResponse.json();
     return weatherResult;
@@ -104,8 +90,9 @@ export default function App() {
   const handleKeyDown = (event) => {
     let inputValue = inputCityRef.current.value;
     if (event.key === "Enter" || event.button === 0) {
-      const selectedCity =
-        (inputValue.charAt(0).toUpperCase() + inputValue.slice(1)).trim();
+      const selectedCity = (
+        inputValue.charAt(0).toUpperCase() + inputValue.slice(1)
+      ).trim();
       setCity(selectedCity);
       inputCityRef.current.value = "";
     }
@@ -135,10 +122,6 @@ export default function App() {
       .format("HH:mm A");
 
     return request === "sunrise" ? currentSunrise : currentSunset;
-  };
-
-  const formatData = (data) => {
-    return Math.round(data);
   };
 
   return (
@@ -175,13 +158,13 @@ export default function App() {
                 />
               </div>
               <p className="weather-temp col text-center">
-                {formatData(weatherData.main.temp)}&#176;
+                {Math.round(weatherData.main.temp)}&#176;
               </p>
               <div className="col">
                 <div className="d-flex justify-content-center my-2">
                   <img className="me-2" src={thermometerIcon} alt="" />
                   <p>
-                    Feels like: {formatData(weatherData.main.feels_like)}
+                    Feels like: {Math.round(weatherData.main.feels_like)}
                     &#176;
                   </p>
                 </div>
@@ -191,7 +174,7 @@ export default function App() {
                 </div>
                 <div className="d-flex justify-content-center my-2">
                   <img className="me-2" src={windIcon} alt="" />
-                  <p>Wind: {formatData(weatherData.wind.speed)} m/s</p>
+                  <p>Wind: {Math.round(weatherData.wind.speed)} m/s</p>
                 </div>
               </div>
             </div>
@@ -208,12 +191,12 @@ export default function App() {
               <span className="align-middle">&nbsp;|&nbsp;</span>
               <div className="d-flex">
                 <img className="me-2" src={arrowUpIcon} alt="" />
-                <p>High: {formatData(weatherData.main.temp_max)}&#176;</p>
+                <p>High: {Math.round(weatherData.main.temp_max)}&#176;</p>
               </div>
               <span className="align-middle">&nbsp;|&nbsp;</span>
               <div className="d-flex">
                 <img className="me-2" src={arrowDownIcon} alt="" />
-                <p>Low: {formatData(weatherData.main.temp_min)}&#176;</p>
+                <p>Low: {Math.round(weatherData.main.temp_min)}&#176;</p>
               </div>
             </div>
             <p className="w-100 fw-bold text-left">3-HOUR FORECAST</p>
