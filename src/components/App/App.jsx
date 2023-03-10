@@ -42,7 +42,6 @@ export default function App() {
     try {
       const weatherResponse = await fetchWeatherData(request);
       setWeatherData(weatherResponse);
-      setCity(weatherResponse.name)
       console.log(weatherResponse);
     } catch (error) {
       console.error(error);
@@ -56,7 +55,7 @@ export default function App() {
 
   useEffect(() => {
     if (location.lat && location.lon) {
-      fetchData("initial");
+      fetchData("initial"); 
     }
   }, [location]);
 
