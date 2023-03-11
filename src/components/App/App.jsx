@@ -55,7 +55,7 @@ export default function App() {
 
   useEffect(() => {
     if (location.lat && location.lon) {
-      fetchData("initial"); 
+      fetchData("initial");
     }
   }, [location]);
 
@@ -143,7 +143,9 @@ export default function App() {
         </Button>
         <Button
           className="input-container-button btn bg-transparent d-flex align-items-center border-0 py-0"
-          onClick={() => {fetchData("initial")}}
+          onClick={() => {
+            fetchData("initial");
+          }}
         >
           <img src={locationIcon} alt="" />
         </Button>
@@ -185,7 +187,7 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="w-100 d-flex justify-content-between my-5">
+            <div className="additional-weather-info w-100 d-flex justify-content-between my-5">
               <div className="d-flex">
                 <img className="me-2" src={sunriseIcon} alt="" />
                 <p>Rise: {getCurrentCitySunriseSunset("sunrise")}</p>

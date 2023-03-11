@@ -65,4 +65,29 @@ img {
 .forecast-splitting-line {
   height: 1px;
   background-color: #fff;
+}
+
+@media (min-width: 0px) {
+  .additional-weather-info {
+    align-items: center;
+    flex-direction: column;
+  }
+  .additional-weather-info div {
+    margin: 8px 0px;
+  }
+  .additional-weather-info span {
+    display: none;
+  }
+}
+@media (min-width: 577px) {
+  .additional-weather-info {
+    align-items: center;
+    flex-direction: row;
+  }
+  .additional-weather-info div {
+    margin: 0px;
+  }
+  .additional-weather-info span {
+    display: block;
+  }
 }/*# sourceMappingURL=App.css.map */
