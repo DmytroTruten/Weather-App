@@ -153,7 +153,7 @@ export default function App() {
       <div className="weather-info col-xs-12 col-sm-10 col-md-8 col-lg-6 d-flex flex-column align-items-center px-0">
         {weatherData.main ? (
           <Fragment>
-            <p className="current-datetime fw-normal my-2">
+            <p className="current-datetime fw-normal my-2 text-center">
               {getCurrentCityTime()}
             </p>
             <p className="current-city fw-bold">{`${weatherData.name}, ${weatherData.sys.country}`}</p>
