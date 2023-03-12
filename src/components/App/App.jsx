@@ -20,35 +20,6 @@ export default function App() {
   const didMount = useRef(true);
   const inputCityRef = useRef(null);
 
-  const getCurrentLocation = async () => {
-    if (navigator.geolocation) {
-      try {
-        const position = await new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject);
-        });
-        setLocation({
-          lat: position.coords.latitude,
-          lon: position.coords.longitude,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  };
-
-  const fetchData = async (request) => {
-    try {
-      const weatherResponse = await fetchWeatherData(request);
-      setWeatherData(weatherResponse);
-      console.log(weatherResponse);
-    } catch (error) {
-      console.error(error);
-      setWeatherData([]);
-    }
-  };
-
   useEffect(() => {
     getCurrentLocation();
   }, []);
@@ -70,6 +41,39 @@ export default function App() {
       }
     }
   }, [city]);
+
+  const getCurrentLocation = async () => {
+    if (navigator.geolocation) {
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+        setLocation({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
+  const fetchData = async (request) => {
+    try {
+      const weatherResponse = await fetchWeatherData(request);
+      if (weatherResponse.name === weatherData.name) {
+        return;
+      } else {
+        setWeatherData(weatherResponse);
+        console.log(weatherResponse);
+      }
+    } catch (error) {
+      console.error(error);
+      setWeatherData([]);
+    }
+  };
 
   const fetchWeatherData = async (request) => {
     const endpoint =
