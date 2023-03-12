@@ -44,7 +44,7 @@ export default function ForecastSection(props) {
             className="forecast-3-hour d-flex flex-column align-items-center"
             key={i}
           >
-            <p>{`${moment(forecastData.list[i].dt_txt).format("hh:mm A")}`}</p>
+            <p>{`${moment(forecastData.list[i].dt_txt).format("HH:mm")}`}</p>
             <img
               className="forecast-icon"
               src={`https://openweathermap.org/img/wn/${forecastData.list[i].weather[0].icon}@2x.png`}

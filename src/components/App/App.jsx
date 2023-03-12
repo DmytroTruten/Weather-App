@@ -104,7 +104,7 @@ export default function App() {
       "dddd, D MMMM YYYY"
     )} | Local Time: `;
     const timezoneInMinutes = weatherData.timezone / 60;
-    const currentTime = moment().utcOffset(timezoneInMinutes).format("h:mm A");
+    const currentTime = moment().utcOffset(timezoneInMinutes).format("HH:mm");
     return currentDate + currentTime;
   };
 
@@ -116,17 +116,17 @@ export default function App() {
     let currentSunrise = moment
       .utc(dataSunrise, "X")
       .add(timezone, "seconds")
-      .format("HH:mm A");
+      .format("HH:mm");
     let currentSunset = moment
       .utc(dataSunset, "X")
       .add(timezone, "seconds")
-      .format("HH:mm A");
+      .format("HH:mm");
 
     return request === "sunrise" ? currentSunrise : currentSunset;
   };
 
   return (
-    <div className="app d-flex flex-column align-items-center mx-0">
+    <div className="app d-flex flex-column align-items-center mx-0 px-3">
       <div className="input-container col-12 d-flex justify-content-center align-items-center px-0">
         <input
           className="input-city border-0"
