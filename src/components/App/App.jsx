@@ -17,6 +17,7 @@ export default function App() {
   const [location, setLocation] = useState({ lat: null, lon: null });
   const [weatherData, setWeatherData] = useState([]);
   const [city, setCity] = useState("");
+  const [units, setUnits] = useState("metric");
   const didMount = useRef(true);
   const inputCityRef = useRef(null);
 
@@ -26,7 +27,7 @@ export default function App() {
 
   useEffect(() => {
     if (location.lat && location.lon) {
-      fetchData("initial");
+      fetchData("initial", units);
     }
   }, [location]);
 
@@ -35,7 +36,7 @@ export default function App() {
       didMount.current = false;
     } else {
       try {
-        fetchData("user input");
+        fetchData("user input", units);
       } catch {
         setWeatherData([]);
       }
@@ -60,13 +61,14 @@ export default function App() {
     }
   };
 
-  const fetchData = async (request) => {
+  const fetchData = async (request, units) => {
     try {
-      const weatherResponse = await fetchWeatherData(request);
+      const weatherResponse = await fetchWeatherData(request, units);
       if (weatherResponse.name === weatherData.name) {
         return;
       } else {
         setWeatherData(weatherResponse);
+        setCity(weatherResponse.name)
         console.log(weatherResponse);
       }
     } catch (error) {
@@ -75,7 +77,8 @@ export default function App() {
     }
   };
 
-  const fetchWeatherData = async (request) => {
+  const fetchWeatherData = async (request, units) => {
+    setUnits(units);
     const endpoint =
       request === "initial"
         ? `weather?lat=${location.lat}&lon=${location.lon}`
@@ -83,7 +86,7 @@ export default function App() {
     const weatherResponse = await fetch(
       `${import.meta.env.VITE_API_URL}/${endpoint}&appid=${
         import.meta.env.VITE_API_KEY
-      }&units=metric`
+      }&units=${units}`
     );
     if (!weatherResponse.ok) {
       throw new Error("Wrong request parameters...");
@@ -148,18 +151,28 @@ export default function App() {
         <Button
           className="input-container-button bg-transparent d-flex align-items-center border-0 py-0"
           onClick={() => {
-            fetchData("initial");
+            fetchData("initial", units);
           }}
         >
           <img src={locationIcon} alt="" />
         </Button>
         <div>
-          <Button className="bg-transparent border-0">
-          &#176;C
+          <Button
+            className="bg-transparent border-0"
+            onClick={() => {
+              fetchData("user input", "metric");
+            }}
+          >
+            &#176;C
           </Button>
           <span>|</span>
-          <Button className="bg-transparent border-0">
-          &#176;F
+          <Button
+            className="bg-transparent border-0"
+            onClick={() => {
+              fetchData("user input", "imperial");
+            }}
+          >
+            &#176;F
           </Button>
         </div>
       </div>
