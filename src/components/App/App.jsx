@@ -64,13 +64,9 @@ export default function App() {
   const fetchData = async (request, units) => {
     try {
       const weatherResponse = await fetchWeatherData(request, units);
-      if (weatherResponse.name === weatherData.name) {
-        return;
-      } else {
-        setWeatherData(weatherResponse);
-        setCity(weatherResponse.name)
-        console.log(weatherResponse);
-      }
+      setWeatherData(weatherResponse);
+      setCity(weatherResponse.name)
+      console.log(weatherResponse);
     } catch (error) {
       console.error(error);
       setWeatherData([]);
@@ -236,11 +232,11 @@ export default function App() {
             </div>
             <p className="w-100 fw-bold text-left">3-HOUR FORECAST</p>
             <span className="forecast-splitting-line w-100 my-3"></span>
-            <ForecastSection city={weatherData.name} type={"3-hour"} />
+            <ForecastSection city={weatherData.name} type={"3-hour"} units={units} />
 
             <p className="w-100 fw-bold text-left mt-4">DAILY FORECAST</p>
             <span className="forecast-splitting-line w-100 my-3"></span>
-            <ForecastSection city={weatherData.name} type={"daily"} />
+            <ForecastSection city={weatherData.name} type={"daily"} units={units} />
           </Fragment>
         ) : null}
       </div>

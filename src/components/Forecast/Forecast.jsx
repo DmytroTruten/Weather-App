@@ -5,7 +5,8 @@ export default function ForecastSection(props) {
   const [forecastData, setForecastData] = useState([]);
 
   const fetchData = async () => {
-    const forecastResponse = await fetchForecastData();
+    const units = props.units;
+    const forecastResponse = await fetchForecastData(units);
     setForecastData(forecastResponse);
     console.log(forecastResponse);
   };
@@ -16,13 +17,13 @@ export default function ForecastSection(props) {
     } catch {
       setForecastData([]);
     }
-  }, [props.city]);
+  }, [props.city, props.units]);
 
-  const fetchForecastData = async () => {
+  const fetchForecastData = async (units) => {
     const forecastResponse = await fetch(
       `${import.meta.env.VITE_API_URL}/forecast?q=${props.city}&appid=${
         import.meta.env.VITE_API_KEY
-      }&units=metric`
+      }&units=${units}`
     );
     if (!forecastResponse.ok) {
       throw new Error("Something went wrong...");
