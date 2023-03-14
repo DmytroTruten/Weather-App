@@ -65,7 +65,7 @@ export default function App() {
     try {
       const weatherResponse = await fetchWeatherData(request, units);
       setWeatherData(weatherResponse);
-      setCity(weatherResponse.name)
+      setCity(weatherResponse.name);
       console.log(weatherResponse);
     } catch (error) {
       console.error(error);
@@ -93,7 +93,7 @@ export default function App() {
 
   const handleKeyDown = (event) => {
     let inputValue = inputCityRef.current.value;
-    if (event.key === "Enter" || event.button === 0) {
+    if (inputValue !== "" && (event.key === "Enter" || event.button === 0)) {
       const selectedCity = (
         inputValue.charAt(0).toUpperCase() + inputValue.slice(1)
       ).trim();
@@ -130,6 +130,7 @@ export default function App() {
 
   return (
     <div className="app d-flex flex-column align-items-center mx-0 px-3">
+      {weatherData === [] && <p>There is no such city...</p>}
       <div className="input-container col-12 d-flex justify-content-center align-items-center my-3 px-0">
         <input
           className="input-city border-0"
@@ -232,11 +233,19 @@ export default function App() {
             </div>
             <p className="w-100 fw-bold text-left">3-HOUR FORECAST</p>
             <span className="forecast-splitting-line w-100 my-3"></span>
-            <ForecastSection city={weatherData.name} type={"3-hour"} units={units} />
+            <ForecastSection
+              city={weatherData.name}
+              type={"3-hour"}
+              units={units}
+            />
 
             <p className="w-100 fw-bold text-left mt-4">DAILY FORECAST</p>
             <span className="forecast-splitting-line w-100 my-3"></span>
-            <ForecastSection city={weatherData.name} type={"daily"} units={units} />
+            <ForecastSection
+              city={weatherData.name}
+              type={"daily"}
+              units={units}
+            />
           </Fragment>
         ) : null}
       </div>
