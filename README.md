@@ -15,6 +15,7 @@ This app was built using the following technologies:
 
 - [Vite.js](https://vitejs.dev/)
 - [React.js](https://ru.reactjs.org/)
+- [Moment.js](https://momentjs.com/)
 - [React-Bootstrap](https://react-bootstrap.netlify.app/)
 - [OpenWeatherMap API](https://openweathermap.org/)
 
@@ -22,12 +23,13 @@ This app was built using the following technologies:
 
 To get started with this app, follow these steps:
 
-1.Clone this repository to your local machine.
-2.Run npm install to install the necessary dependencies.
-3.Obtain an API key from the OpenWeatherMap website.
-4.Create a .env file in the root directory of the project.
-5.Add your API key to the .env file, like this: REACT_APP_API_KEY=<your_api_key_here>.
-6.Run npm run dev to start the development server.
+1.Clone this repository to your local machine.<br />
+2.Run ```npm install``` to install the necessary dependencies.<br />
+3.Obtain an API key from the OpenWeatherMap website.<br />
+4.Create a ```.env``` file in the root directory of the project.<br />
+5.Add your API key and API URL to the ```.env``` file, like this: ```VITE_API_KEY=<your_api_key_here>
+VITE_API_URL=<https://api.openweathermap.org/data/2.5'>```<br />
+6.Run ```npm run dev``` to start the development server.<br />
 7.Navigate to http://localhost:5173 to view the app in your browser.
 
 ## Usage
