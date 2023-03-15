@@ -34,8 +34,9 @@ VITE_API_KEY = <your_api_key_here>
 VITE_API_URL = https://api.openweathermap.org/data/2.5'
 ```
 <br />
+
 6. Run ```npm run dev``` to start the development server.<br />
-7. Navigate to http://localhost:5173 to view the app in your browser.
+7. Navigate to ```http://localhost:5173``` to view the app in your browser.
 
 ## Usage
 
