@@ -18,6 +18,7 @@ export default function App() {
   const [weatherData, setWeatherData] = useState([]);
   const [city, setCity] = useState("");
   const [units, setUnits] = useState("metric");
+  const [error, setError] = useState(null);
   const didMount = useRef(true);
   const inputCityRef = useRef(null);
 
@@ -85,8 +86,10 @@ export default function App() {
       }&units=${units}`
     );
     if (!weatherResponse.ok) {
+      setError(true);
       throw new Error("Wrong request parameters...");
     }
+    setError(null)
     const weatherResult = await weatherResponse.json();
     return weatherResult;
   };
@@ -130,7 +133,6 @@ export default function App() {
 
   return (
     <div className="app d-flex flex-column align-items-center mx-0 px-3">
-      {weatherData === [] && <p>There is no such city...</p>}
       <div className="input-container col-12 d-flex justify-content-center align-items-center my-3 px-0">
         <input
           className="input-city border-0"
@@ -173,82 +175,85 @@ export default function App() {
           </Button>
         </div>
       </div>
-      <div className="weather-info col-xs-12 col-sm-10 col-md-8 col-lg-6 d-flex flex-column align-items-center px-0">
-        {weatherData.main ? (
-          <Fragment>
-            <p className="current-datetime fw-normal my-2 text-center">
-              {getCurrentCityTime()}
-            </p>
-            <p className="current-city fw-bold">{`${weatherData.name}, ${weatherData.sys.country}`}</p>
-            <p className="weather-main my-4">{weatherData.weather[0].main}</p>
-            <div className="w-100 row justify-content-between align-items-center">
-              <div className="col d-flex justify-content-center">
-                <img
-                  className="weather-main-icon"
-                  src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
-                  alt=""
-                />
-              </div>
-              <p className="weather-temp col text-center">
-                {Math.round(weatherData.main.temp)}&#176;
+      {error === null && (
+        <div className="weather-info col-xs-12 col-sm-10 col-md-8 col-lg-6 d-flex flex-column align-items-center px-0">
+          {weatherData.main ? (
+            <Fragment>
+              <p className="current-datetime fw-normal my-2 text-center">
+                {getCurrentCityTime()}
               </p>
-              <div className="col">
-                <div className="d-flex justify-content-center my-2">
-                  <img className="me-2" src={thermometerIcon} alt="" />
-                  <p>
-                    Feels like: {Math.round(weatherData.main.feels_like)}
-                    &#176;
-                  </p>
+              <p className="current-city fw-bold">{`${weatherData.name}, ${weatherData.sys.country}`}</p>
+              <p className="weather-main my-4">{weatherData.weather[0].main}</p>
+              <div className="w-100 row justify-content-between align-items-center">
+                <div className="col d-flex justify-content-center">
+                  <img
+                    className="weather-main-icon"
+                    src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                    alt=""
+                  />
                 </div>
-                <div className="d-flex justify-content-center my-2">
-                  <img className="me-2" src={waterdropIcon} alt="" />
-                  <p>Humidity: {weatherData.main.humidity}%</p>
+                <p className="weather-temp col text-center">
+                  {Math.round(weatherData.main.temp)}&#176;
+                </p>
+                <div className="col">
+                  <div className="d-flex justify-content-center my-2">
+                    <img className="me-2" src={thermometerIcon} alt="" />
+                    <p>
+                      Feels like: {Math.round(weatherData.main.feels_like)}
+                      &#176;
+                    </p>
+                  </div>
+                  <div className="d-flex justify-content-center my-2">
+                    <img className="me-2" src={waterdropIcon} alt="" />
+                    <p>Humidity: {weatherData.main.humidity}%</p>
+                  </div>
+                  <div className="d-flex justify-content-center my-2">
+                    <img className="me-2" src={windIcon} alt="" />
+                    <p>Wind: {Math.round(weatherData.wind.speed)} m/s</p>
+                  </div>
                 </div>
-                <div className="d-flex justify-content-center my-2">
-                  <img className="me-2" src={windIcon} alt="" />
-                  <p>Wind: {Math.round(weatherData.wind.speed)} m/s</p>
+              </div>
+              <div className="additional-weather-info w-100 d-flex justify-content-between my-5">
+                <div className="d-flex">
+                  <img className="me-2" src={sunriseIcon} alt="" />
+                  <p>Rise: {getCurrentCitySunriseSunset("sunrise")}</p>
+                </div>
+                <span className="align-middle">&nbsp;|&nbsp;</span>
+                <div className="d-flex">
+                  <img className="me-2" src={sunsetIcon} alt="" />
+                  <p>Set: {getCurrentCitySunriseSunset("sunset")}</p>
+                </div>
+                <span className="align-middle">&nbsp;|&nbsp;</span>
+                <div className="d-flex">
+                  <img className="me-2" src={arrowUpIcon} alt="" />
+                  <p>High: {Math.round(weatherData.main.temp_max)}&#176;</p>
+                </div>
+                <span className="align-middle">&nbsp;|&nbsp;</span>
+                <div className="d-flex">
+                  <img className="me-2" src={arrowDownIcon} alt="" />
+                  <p>Low: {Math.round(weatherData.main.temp_min)}&#176;</p>
                 </div>
               </div>
-            </div>
-            <div className="additional-weather-info w-100 d-flex justify-content-between my-5">
-              <div className="d-flex">
-                <img className="me-2" src={sunriseIcon} alt="" />
-                <p>Rise: {getCurrentCitySunriseSunset("sunrise")}</p>
-              </div>
-              <span className="align-middle">&nbsp;|&nbsp;</span>
-              <div className="d-flex">
-                <img className="me-2" src={sunsetIcon} alt="" />
-                <p>Set: {getCurrentCitySunriseSunset("sunset")}</p>
-              </div>
-              <span className="align-middle">&nbsp;|&nbsp;</span>
-              <div className="d-flex">
-                <img className="me-2" src={arrowUpIcon} alt="" />
-                <p>High: {Math.round(weatherData.main.temp_max)}&#176;</p>
-              </div>
-              <span className="align-middle">&nbsp;|&nbsp;</span>
-              <div className="d-flex">
-                <img className="me-2" src={arrowDownIcon} alt="" />
-                <p>Low: {Math.round(weatherData.main.temp_min)}&#176;</p>
-              </div>
-            </div>
-            <p className="w-100 fw-bold text-left">3-HOUR FORECAST</p>
-            <span className="forecast-splitting-line w-100 my-3"></span>
-            <ForecastSection
-              city={weatherData.name}
-              type={"3-hour"}
-              units={units}
-            />
+              <p className="w-100 fw-bold text-left">3-HOUR FORECAST</p>
+              <span className="forecast-splitting-line w-100 my-3"></span>
+              <ForecastSection
+                city={weatherData.name}
+                type={"3-hour"}
+                units={units}
+              />
 
-            <p className="w-100 fw-bold text-left mt-4">DAILY FORECAST</p>
-            <span className="forecast-splitting-line w-100 my-3"></span>
-            <ForecastSection
-              city={weatherData.name}
-              type={"daily"}
-              units={units}
-            />
-          </Fragment>
-        ) : null}
-      </div>
+              <p className="w-100 fw-bold text-left mt-4">DAILY FORECAST</p>
+              <span className="forecast-splitting-line w-100 my-3"></span>
+              <ForecastSection
+                city={weatherData.name}
+                type={"daily"}
+                units={units}
+              />
+            </Fragment>
+          ) : null}
+        </div>
+      )}
+      {error !== null && <p>There is no such city: {city}</p>}
     </div>
   );
 }
