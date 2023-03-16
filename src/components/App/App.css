@@ -3,7 +3,8 @@
   font-family: "Quicksand", "Arial";
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -68,6 +69,12 @@ img {
 }
 
 @media (min-width: 0px) {
+  .input-container {
+    flex-direction: column;
+  }
+  .units-container {
+    margin-top: 16px;
+  }
   .additional-weather-info {
     align-items: center;
     flex-direction: column;
@@ -80,6 +87,12 @@ img {
   }
 }
 @media (min-width: 577px) {
+  .input-container {
+    flex-direction: row;
+  }
+  .units-container {
+    margin-top: 0;
+  }
   .additional-weather-info {
     align-items: center;
     flex-direction: row;

@@ -89,7 +89,7 @@ export default function App() {
       setError(true);
       throw new Error("Wrong request parameters...");
     }
-    setError(null)
+    setError(null);
     const weatherResult = await weatherResponse.json();
     return weatherResult;
   };
@@ -132,30 +132,32 @@ export default function App() {
   };
 
   return (
-    <div className="app d-flex flex-column align-items-center mx-0 px-3">
+    <div className="app d-flex flex-column align-items-center mx-0 px-3 pb-3">
       <div className="input-container col-12 d-flex justify-content-center align-items-center my-3 px-0">
-        <input
-          className="input-city border-0"
-          type="text"
-          onKeyDown={handleKeyDown}
-          placeholder="Search for a city..."
-          ref={inputCityRef}
-        />
-        <Button
-          className="input-container-button bg-transparent d-flex align-items-center border-0 py-0"
-          onClick={handleKeyDown}
-        >
-          <img className="search-city-icon" src={searchIcon} alt="" />
-        </Button>
-        <Button
-          className="input-container-button bg-transparent d-flex align-items-center border-0 py-0"
-          onClick={() => {
-            fetchData("initial", units);
-          }}
-        >
-          <img src={locationIcon} alt="" />
-        </Button>
-        <div>
+        <div className="d-flex flex-row">
+          <input
+            className="input-city border-0"
+            type="text"
+            onKeyDown={handleKeyDown}
+            placeholder="Search for a city..."
+            ref={inputCityRef}
+          />
+          <Button
+            className="input-container-button bg-transparent d-flex align-items-center border-0 py-0"
+            onClick={handleKeyDown}
+          >
+            <img className="search-city-icon" src={searchIcon} alt="" />
+          </Button>
+          <Button
+            className="input-container-button bg-transparent d-flex align-items-center border-0 py-0"
+            onClick={() => {
+              fetchData("initial", units);
+            }}
+          >
+            <img src={locationIcon} alt="" />
+          </Button>
+        </div>
+        <div className="units-container">
           <Button
             className="bg-transparent border-0"
             onClick={() => {
