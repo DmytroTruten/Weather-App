@@ -66,7 +66,6 @@ export default function App() {
     try {
       const weatherResponse = await fetchWeatherData(request, units);
       setWeatherData(weatherResponse);
-      setCity(weatherResponse.name);
       console.log(weatherResponse);
     } catch (error) {
       console.error(error);
