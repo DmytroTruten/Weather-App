@@ -76,6 +76,7 @@ export default function App() {
 
   const fetchWeatherData = async (request, units) => {
     setUnits(units);
+    setError(null);
     const endpoint =
       request === "initial"
         ? `weather?lat=${location.lat}&lon=${location.lon}`
@@ -89,7 +90,6 @@ export default function App() {
       setError(true);
       throw new Error("Wrong request parameters...");
     }
-    setError(null);
     const weatherResult = await weatherResponse.json();
     return weatherResult;
   };
@@ -255,7 +255,7 @@ export default function App() {
           ) : null}
         </div>
       )}
-      {error !== null && <p>There is no such city: {city}</p>}
+      {error !== null && <p>There is no such city: "{city}"</p>}
     </div>
   );
 }
