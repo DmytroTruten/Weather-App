@@ -66,10 +66,8 @@ export default function App() {
     try {
       const weatherResponse = await fetchWeatherData(request, units);
       setWeatherData(weatherResponse);
-      setCity(weatherResponse.name)
-      console.log(weatherResponse);
+      setCity(weatherResponse.name);
     } catch (error) {
-      console.error(error);
       setWeatherData([]);
     }
   };
@@ -86,6 +84,7 @@ export default function App() {
         import.meta.env.VITE_API_KEY
       }&units=${units}`
     );
+    console.log(weatherResponse);
     if (!weatherResponse.ok) {
       setError(true);
       throw new Error("Wrong request parameters...");
