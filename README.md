@@ -13,7 +13,7 @@ This is a simple weather app that allows users to search for weather information
 
 This app was built using the following technologies:
 
-- [Vite.js](https://vitejs.dev/)
+- [Vite](https://vitejs.dev/)
 - [React.js](https://ru.reactjs.org/)
 - [Moment.js](https://momentjs.com/)
 - [React-Bootstrap](https://react-bootstrap.netlify.app/)
