@@ -75,24 +75,32 @@ export default function App() {
   const fetchWeatherData = async (request, units) => {
     setUnits(units);
     setError(null);
-    const endpoint =
-      request === "initial"
-        ? `weather?lat=${location.lat}&lon=${location.lon}`
-        : `weather?q=${city}`;
-    const weatherResponse = await fetch(
-      `${import.meta.env.VITE_API_URL}/${endpoint}&appid=${
-        import.meta.env.VITE_API_KEY
-      }&units=${units}`
-    );
+    
+    let endpoint;
+    if (request === "initial") {
+      endpoint = `weather?lat=${location.lat}&lon=${location.lon}`;
+    } else {
+      endpoint = `weather?q=${city}`;
+    }
+  
+    const apiUrl = import.meta.env.VITE_API_URL;
+    const apiKey = import.meta.env.VITE_API_KEY;
+  
+    const url = `${apiUrl}/${endpoint}&appid=${apiKey}&units=${units}`;
+  
+    const weatherResponse = await fetch(url);
+    
     console.log(weatherResponse);
+    
     if (!weatherResponse.ok) {
       setError(true);
       throw new Error("Wrong request parameters...");
     }
+    
     const weatherResult = await weatherResponse.json();
     return weatherResult;
   };
-
+  
   const handleKeyDown = (event) => {
     let inputValue = inputCityRef.current.value;
     if (inputValue !== "" && (event.key === "Enter" || event.button === 0)) {
