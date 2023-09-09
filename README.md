@@ -42,4 +42,3 @@ VITE_API_URL = https://api.openweathermap.org/data/2.5'
 
 To use the app, simply enter the name of the city you want to search for in the input field and press the "Search" button or hit the "Enter" key. The app will display the current weather information for the selected city, along with the 3-hour and daily forecast.
 
-You can also toggle between Celsius and Fahrenheit temperature units by clicking on the respective buttons.
